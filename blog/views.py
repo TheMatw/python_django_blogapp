@@ -1,11 +1,16 @@
 from django.http import HttpResponse
 from django.shortcuts import render
+from django.utils import timezone
+
+from blog.models import Post
 
 # Create your views here.
 # view 내에 선언된 함수로 인자로 HttpRequest라는 객체를 Django가 전달해준다.
+
 def post_list(request):
     my_name = '장고웹프레임워크'
     http_method = request.method
+
     # return HttpResponse('''
     #     <h2>Welcome {name}</h2>
     #     <p>Http Method : {method}<p/>
@@ -13,4 +18,6 @@ def post_list(request):
     #     <p>Http Path : {mypath}</p>
     # '''.format(name=my_name, method=http_method, header=request.headers['user_agent'], mypath=request.path))
 
-    return render(request, 'blog/post_list.html')
+    # return render(request, 'blog/post_list.html')
+    posts = Post.objects.filter(published_date__lte = timezone.now()).order_by('-published_date')
+    return render(request, 'blog/post_list.html',{'post_list':posts})

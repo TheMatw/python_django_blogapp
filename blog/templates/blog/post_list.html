@@ -1,10 +1,25 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
     <title>Django blog</title>
+    <link rel = "stylesheet" href="{% static 'css/blog.css' %}">
 </head>
 <body>
     <h1>Welcome 장고!!</h1>
+    <!-- HTML 주석 -->
+    {# 주석 #}
+    {% comment %} 주석 {% endcomment %}
+
+    {% for post in post_list %}
+        <div>
+            <p>published: {{ post.published_date }}</p>
+            <h1><a href="">{{ post.title }}</a></h1>
+            <p>{{ post.text | linebreaksbr }}</p>
+        </div>
+    {% empty %}
+        <p>Blog(글)이 없습니다.</p>
+    {% endfor %}
 </body>
 </html>
