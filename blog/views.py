@@ -7,7 +7,7 @@ from .models import Post
 # 글상세정보
 def post_detail(request,pk):
     post = get_object_or_404(Post, pk=pk)
-    return render(request, 'blog/post_detail.html', {'post': post})
+    return render(request, 'blog/post_detail.html', {'post_key': post})
 
 # Views 내에 선언된 함수로 인자로 HttpRequest 라는 객체를 Django가 전달해준다.
 # 글목록

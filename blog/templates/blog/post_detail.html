@@ -3,9 +3,9 @@
 {% block content %}
     <div class="post">
         <div class="date">
-            <p>published: {{ post.published_date }}</p>
+            <p>published: {{ post_key.published_date }}</p>
         </div>
-        <h1><a href="">{{ post.title }}</a></h1>
-        <p>{{ post.text| linebreaksbr }}</p>
+        <h1><a href="">{{ post_key.title }}</a></h1>
+        <p>{{ post_key.text| linebreaksbr }}</p>
     </div>
 {% endblock %}
