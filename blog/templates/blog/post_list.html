@@ -4,22 +4,34 @@
 <head>
     <meta charset="UTF-8">
     <title>Django blog</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" type="text/css">
     <link rel = "stylesheet" href="{% static 'css/blog.css' %}">
 </head>
 <body>
-    <h1>Welcome 장고!!</h1>
+    <div class="page-header">
+    <h1><a href="">Django Blog</a></h1>
+    </div>
     <!-- HTML 주석 -->
     {# 주석 #}
     {% comment %} 주석 {% endcomment %}
-
-    {% for post in post_list %}
-        <div>
-            <p>published: {{ post.published_date }}</p>
-            <h1><a href="">{{ post.title }}</a></h1>
-            <p>{{ post.text | linebreaksbr }}</p>
+    <div class="content container">
+        <div class="row">
+            <div class="col-md-8">
+                {% for post in post_list %}
+                    <div class="post">
+                        <div class="date">
+                            <p>published: {{ post.published_date }}</p>
+                        </div>
+                        <h1><a href="">{{ post.title }}</a></h1>
+                        <p>{{ post.text | linebreaksbr }}</p>
+                    </div>
+                {% empty %}
+                    <p>Blog(글)이 없습니다.</p>
+                {% endfor %}
+            </div>
         </div>
-    {% empty %}
-        <p>Blog(글)이 없습니다.</p>
-    {% endfor %}
+    </div>
 </body>
 </html>
