@@ -3,10 +3,31 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 
 from .models import Post
-from .forms import PostModelForm
+from .forms import PostModelForm, PostForm
 
-# 글등록
+# 글등록 (form) 사용
 def post_new(request):
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            # 검증을 통과한 입력 데이터
+            print(form.cleaned_data)
+            clean_data_dict = form.cleaned_data
+            # create() 함수가 호출되면 등록처리가 이루어진다
+            post = Post.objects.create(
+                author = request.user,
+                title = clean_data_dict['title'],
+                text = clean_data_dict['text'],
+                published_date = timezone.now()
+            )
+            return redirect('post_detail', pk=post.pk)
+    else:
+        form = PostForm()
+    return render(request, 'blog/post_edit.html', {'postform':form})
+
+
+# 글등록 (ModelForm사용)
+def post_new_modelform(request):
     if request.method == 'POST':
         # 등록을 요청하는 경우
         post_form = PostModelForm(request.POST)
