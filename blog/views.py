@@ -10,16 +10,17 @@ def post_new(request):
     if request.method == 'POST':
         # 등록을 요청하는 경우
         post_form = PostModelForm(request.POST)
-        # form 객체의 save() 호출하면 Model 객체가 생성됨
-        post = post_form.save(commit=False)
-        # 로그인된 username을 작성자(author) 필드에 저장
-        post.author = request.user
-        # 현재날짜시간을 게시일자(published_date) 필드에 저장
-        post.published_date = timezone.now()
-        # post 객체가 저장되면서 insert 처리가 되어진다
-        post.save()
-        # 등록 후에 상세페이지로 리다이렉션 처리하기
-        return redirect('post_detail', pk=post.pk)
+        if post_form.is_valid():
+            # form 객체의 save() 호출하면 Model 객체가 생성됨
+            post = post_form.save(commit=False)
+            # 로그인된 username을 작성자(author) 필드에 저장
+            post.author = request.user
+            # 현재날짜시간을 게시일자(published_date) 필드에 저장
+            post.published_date = timezone.now()
+            # post 객체가 저장되면서 insert 처리가 되어진다
+            post.save()
+            # 등록 후에 상세페이지로 리다이렉션 처리하기
+            return redirect('post_detail', pk=post.pk)
     else:
         # 등록을 위한 Form을 출력하는 경우
         post_form = PostModelForm()
