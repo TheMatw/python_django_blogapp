@@ -5,6 +5,9 @@
         <div class="date">
             <p>published: {{ post_key.published_date }}</p>
         </div>
+        <a class="btn btn-default" href="{% url 'post_edit' pk=post_key.pk %}">
+            <span class="glyphicon glyphicon-pencil"></span>
+        </a>
         <h1>{{ post_key.title }}</h1>
         <p>{{ post_key.text| linebreaksbr }}</p>
     </div>
