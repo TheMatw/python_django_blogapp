@@ -5,11 +5,28 @@ from django.utils import timezone
 from .models import Post
 from .forms import PostModelForm, PostForm
 
+# 글삭제
+def post_remove(request, pk):
+    post = Post.objects.get(pk=pk)
+    post.delete()
+    return redirect('post_list_home')
+
 # 글수정(ModelForm) 사용
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if request.method == 'POST':
-        pass
+        form = PostModelForm(request.POST, instance=post)
+        if form.is_valid():
+            # form 객체의 save() 호출하면 Model 객체가 생성되어진다.
+            post = form.save(commit=False)
+            # 로그인된 username을 작성자(author)필드에 저장
+            post.author = request.user
+            # 현재날짜시간을 게시일자(published_date) 필드에 저장
+            post.published_date = timezone.now()
+            # post 객체가 저장되면서 insert 처리가 되어진다.
+            post.save()
+            # 등록 후에 상세페이지로 리다이렉션 처리하기
+            return redirect('post_detail', pk=post.pk)
     else:
         form = PostModelForm(instance=post)
     return render(request, 'blog/post_edit.html', {'postform': form})
